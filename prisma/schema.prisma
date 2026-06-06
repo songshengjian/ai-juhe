@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum MessageRole {
+  SYSTEM
+  USER
+  ASSISTANT
+}
+
+enum ModelProvider {
+  OPENAI_COMPATIBLE
+}
+
+enum RequestStatus {
+  STARTED
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model User {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  projects     Project[]
+  conversations Conversation[]
+  assets        Asset[]
+  requestLogs   ApiRequestLog[]
+  generationJobs GenerationJobRecord[]
+}
+
+model Project {
+  id            String         @id @default(cuid())
+  name          String         @db.VarChar(80)
+  shareToken    String?        @unique @db.VarChar(64)
+  userId        String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversations Conversation[]
+  assets        Asset[]
+
+  @@index([userId, updatedAt])
+}
+
+model Conversation {
+  id          String          @id @default(cuid())
+  title       String          @db.VarChar(120)
+  modelId     String          @db.VarChar(64)
+  userId      String
+  projectId   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project     Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  messages    Message[]
+  requestLogs ApiRequestLog[]
+
+  @@index([userId, updatedAt])
+  @@index([projectId, updatedAt])
+}
+
+model Message {
+  id               String       @id @default(cuid())
+  conversationId   String
+  role             MessageRole
+  content          String       @db.LongText
+  inputTokens      Int?
+  completionTokens Int?
+  totalTokens      Int?
+  createdAt        DateTime     @default(now())
+  conversation     Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachments      MessageAttachment[]
+
+  @@index([conversationId, createdAt])
+}
+
+model Asset {
+  id            String              @id @default(cuid())
+  fileName      String              @db.VarChar(255)
+  storedName    String              @unique @db.VarChar(255)
+  mimeType      String              @db.VarChar(120)
+  sizeBytes     Int
+  extractedText String?             @db.LongText
+  parseError    String?             @db.VarChar(255)
+  userId        String
+  projectId     String?
+  createdAt     DateTime            @default(now())
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project       Project?            @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  messages      MessageAttachment[]
+
+  @@index([userId, createdAt])
+  @@index([projectId, createdAt])
+}
+
+model MessageAttachment {
+  messageId String
+  assetId   String
+  createdAt DateTime @default(now())
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@id([messageId, assetId])
+}
+
+model ModelConfig {
+  id            String        @id @db.VarChar(64)
+  label         String        @db.VarChar(120)
+  provider      ModelProvider @default(OPENAI_COMPATIBLE)
+  apiModel      String        @db.VarChar(120)
+  baseUrl       String?       @db.VarChar(255)
+  apiKeyEnvName String        @db.VarChar(80)
+  enabled       Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model ApiRequestLog {
+  id               String        @id @default(cuid())
+  userId           String
+  conversationId   String
+  modelId          String        @db.VarChar(64)
+  status           RequestStatus @default(STARTED)
+  inputTokens      Int?
+  completionTokens Int?
+  totalTokens      Int?
+  errorCode        String?       @db.VarChar(80)
+  createdAt        DateTime      @default(now())
+  completedAt      DateTime?
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation     Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([conversationId, createdAt])
+}
+
+model GenerationJobRecord {
+  id              String   @id @db.VarChar(64)
+  userId          String
+  type            String   @db.VarChar(24)
+  prompt          String   @db.LongText
+  ratio           String   @db.VarChar(16)
+  progress        Int      @default(0)
+  model           String   @db.VarChar(120)
+  duration        String   @db.VarChar(16)
+  resolution      String   @default("2K") @db.VarChar(16)
+  outputCount     Int      @default(1)
+  sourceMaterials Json
+  outputUrls      Json?
+  resultText      String?  @db.LongText
+  taskId          String?  @db.VarChar(191)
+  error           String?  @db.LongText
+  cost            Int      @default(0)
+  status          String   @default("running") @db.VarChar(24)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, updatedAt])
+}
