@@ -5,7 +5,6 @@ services:
     region: singapore
     plan: starter
     buildCommand: docker build -t ai-juhe-chat .
-    startCommand: sh -c "npx prisma db push && npm run db:seed && npm run start -- --hostname 0.0.0.0 --port 3000"
     envVars:
       - key: NODE_ENV
         value: production
@@ -17,6 +16,7 @@ services:
           property: connectionString
       - key: REDIS_URL
         fromService:
+          type: redis
           name: ai-juhe-redis
           property: connectionString
       - key: NEXTAUTH_URL
