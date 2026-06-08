@@ -1,16 +1,17 @@
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ai_chat
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-12345678}
+      POSTGRES_DB: ai_chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-12345678}
     ports:
-      - "3307:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -35,12 +36,12 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: mysql://root:${MYSQL_PASSWORD:-12345678}@mysql:3306/ai_chat
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-12345678}@postgres:5432/ai_chat
       REDIS_URL: redis://redis:6379
       NEXTAUTH_URL: http://localhost:3000
       UPLOAD_DIR: /app/.data/uploads
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -50,6 +51,6 @@ services:
       - uploaded-files:/app/.data/uploads
 
 volumes:
-  mysql-data:
+  postgres-data:
   redis-data:
   uploaded-files:

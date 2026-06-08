@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -40,8 +40,8 @@ model User {
 
 model Project {
   id            String         @id @default(cuid())
-  name          String         @db.VarChar(80)
-  shareToken    String?        @unique @db.VarChar(64)
+  name          String
+  shareToken    String?        @unique
   userId        String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -54,8 +54,8 @@ model Project {
 
 model Conversation {
   id          String          @id @default(cuid())
-  title       String          @db.VarChar(120)
-  modelId     String          @db.VarChar(64)
+  title       String
+  modelId     String
   userId      String
   projectId   String?
   createdAt   DateTime        @default(now())
@@ -73,7 +73,7 @@ model Message {
   id               String       @id @default(cuid())
   conversationId   String
   role             MessageRole
-  content          String       @db.LongText
+  content          String
   inputTokens      Int?
   completionTokens Int?
   totalTokens      Int?
@@ -86,12 +86,12 @@ model Message {
 
 model Asset {
   id            String              @id @default(cuid())
-  fileName      String              @db.VarChar(255)
-  storedName    String              @unique @db.VarChar(255)
-  mimeType      String              @db.VarChar(120)
+  fileName      String
+  storedName    String              @unique
+  mimeType      String
   sizeBytes     Int
-  extractedText String?             @db.LongText
-  parseError    String?             @db.VarChar(255)
+  extractedText String?
+  parseError    String?
   userId        String
   projectId     String?
   createdAt     DateTime            @default(now())
@@ -114,12 +114,12 @@ model MessageAttachment {
 }
 
 model ModelConfig {
-  id            String        @id @db.VarChar(64)
-  label         String        @db.VarChar(120)
+  id            String        @id
+  label         String
   provider      ModelProvider @default(OPENAI_COMPATIBLE)
-  apiModel      String        @db.VarChar(120)
-  baseUrl       String?       @db.VarChar(255)
-  apiKeyEnvName String        @db.VarChar(80)
+  apiModel      String
+  baseUrl       String?
+  apiKeyEnvName String
   enabled       Boolean       @default(true)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -129,12 +129,12 @@ model ApiRequestLog {
   id               String        @id @default(cuid())
   userId           String
   conversationId   String
-  modelId          String        @db.VarChar(64)
+  modelId          String
   status           RequestStatus @default(STARTED)
   inputTokens      Int?
   completionTokens Int?
   totalTokens      Int?
-  errorCode        String?       @db.VarChar(80)
+  errorCode        String?
   createdAt        DateTime      @default(now())
   completedAt      DateTime?
   user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -145,23 +145,23 @@ model ApiRequestLog {
 }
 
 model GenerationJobRecord {
-  id              String   @id @db.VarChar(64)
+  id              String   @id
   userId          String
-  type            String   @db.VarChar(24)
-  prompt          String   @db.LongText
-  ratio           String   @db.VarChar(16)
+  type            String
+  prompt          String
+  ratio           String
   progress        Int      @default(0)
-  model           String   @db.VarChar(120)
-  duration        String   @db.VarChar(16)
-  resolution      String   @default("2K") @db.VarChar(16)
+  model           String
+  duration        String
+  resolution      String   @default("2K")
   outputCount     Int      @default(1)
   sourceMaterials Json
   outputUrls      Json?
-  resultText      String?  @db.LongText
-  taskId          String?  @db.VarChar(191)
-  error           String?  @db.LongText
+  resultText      String?
+  taskId          String?
+  error           String?
   cost            Int      @default(0)
-  status          String   @default("running") @db.VarChar(24)
+  status          String   @default("running")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)

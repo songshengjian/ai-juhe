@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: ai-juhe-chat
+    env: docker
+    region: singapore
+    plan: starter
+    buildCommand: docker build -t ai-juhe-chat .
+    startCommand: sh -c "npx prisma db push && npm run db:seed && npm run start -- --hostname 0.0.0.0 --port 3000"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-juhe-db
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: ai-juhe-redis
+          property: connectionString
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: UPLOAD_DIR
+        value: /app/.data/uploads
+      - key: MIMO_BASE_URL
+        value: https://token-plan-cn.xiaomimimo.com/v1
+      - key: MIMO_API_KEY
+        sync: false
+      - key: MIMO_MODEL
+        value: mimo-v2.5
+      - key: VOLCENGINE_BASE_URL
+        value: https://ark.cn-beijing.volces.com/api/v3
+      - key: VOLCENGINE_API_KEY
+        sync: false
+    disk:
+      name: uploads
+      mountPath: /app/.data/uploads
+      sizeGB: 5
+
+databases:
+  - name: ai-juhe-db
+    databaseName: ai_chat
+    databaseType: postgresql
+
+  - name: ai-juhe-redis
+    redisMajorVersion: 7

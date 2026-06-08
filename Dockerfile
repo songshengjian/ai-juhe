@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-ENV DATABASE_URL="mysql://root:build-only@127.0.0.1:3306/ai_chat"
+ENV DATABASE_URL="postgresql://postgres:build-only@127.0.0.1:5432/ai_chat"
 ENV NEXTAUTH_URL="http://localhost:3000"
 ENV NEXTAUTH_SECRET="build-only-secret-not-used-at-runtime"
 RUN npm run build
