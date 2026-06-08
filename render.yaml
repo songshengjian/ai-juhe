@@ -14,11 +14,13 @@ services:
         fromDatabase:
           name: ai-juhe-db
           property: connectionString
+      # Redis URL 需要手动配置（使用 Upstash 免费 Redis）
+      # 1. 访问 https://upstash.com 注册
+      # 2. 创建免费 Redis
+      # 3. 复制 REST API URL（格式：https://xxx.upstash.io）
+      # 4. 在 Render 控制台添加此环境变量
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: ai-juhe-redis
-          property: connectionString
+        sync: false
       - key: NEXTAUTH_URL
         sync: false
       - key: NEXTAUTH_SECRET
@@ -39,12 +41,6 @@ services:
       name: uploads
       mountPath: /app/.data/uploads
       sizeGB: 5
-
-  - type: redis
-    name: ai-juhe-redis
-    plan: starter
-    region: singapore
-    ipAllowList: []
 
 databases:
   - name: ai-juhe-db
