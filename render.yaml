@@ -16,7 +16,7 @@ services:
           name: ai-juhe-db
           property: connectionString
       - key: REDIS_URL
-        fromDatabase:
+        fromService:
           name: ai-juhe-redis
           property: connectionString
       - key: NEXTAUTH_URL
@@ -40,10 +40,14 @@ services:
       mountPath: /app/.data/uploads
       sizeGB: 5
 
+  - type: redis
+    name: ai-juhe-redis
+    plan: starter
+    region: singapore
+    ipAllowList: []
+
 databases:
   - name: ai-juhe-db
     databaseName: ai_chat
     plan: starter
-
-  - name: ai-juhe-redis
-    redis plan: starter
+    region: singapore
