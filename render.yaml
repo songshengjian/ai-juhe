@@ -43,7 +43,7 @@ services:
 databases:
   - name: ai-juhe-db
     databaseName: ai_chat
-    databaseType: postgresql
+    plan: starter
 
   - name: ai-juhe-redis
-    redisMajorVersion: 7
+    redis plan: starter
