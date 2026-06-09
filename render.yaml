@@ -43,6 +43,8 @@ services:
         sync: false
       - key: AGNES_VIDEO_MODEL
         value: agnes-video-v2.0
+      - key: AGNES_TEXT_MODEL
+        value: agnes-2.0-flash
     disk: ~
 
 databases:

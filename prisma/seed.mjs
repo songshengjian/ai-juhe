@@ -58,6 +58,13 @@ const models = [
     apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0",
     baseUrl: agnesBaseUrl,
     apiKeyEnvName: "AGNES_API_KEY"
+  },
+  {
+    id: "agnes-2.0-flash",
+    label: "Agnes Text Flash",
+    apiModel: configuredValue(process.env.AGNES_TEXT_MODEL) ?? "agnes-2.0-flash",
+    baseUrl: agnesBaseUrl,
+    apiKeyEnvName: "AGNES_API_KEY"
   }
 ];
 
