@@ -8,9 +8,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-ENV DATABASE_URL="postgresql://postgres:build-only@127.0.0.1:5432/ai_chat"
+ENV DATABASE_URL="postgresql://placeholder:5432/build"
 ENV NEXTAUTH_URL="http://localhost:3000"
-ENV NEXTAUTH_SECRET="build-only-secret-not-used-at-runtime"
+ENV NEXTAUTH_SECRET="build-only"
+ENV REDIS_URL="redis://localhost:6379"
 RUN npm run build
 
 FROM node:20-bookworm-slim AS runner
