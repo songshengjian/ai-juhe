@@ -33,14 +33,16 @@ const models = [
     label: "MiMo-V2.5",
     apiModel: configuredValue(process.env.MIMO_MODEL) ?? "mimo-v2.5",
     baseUrl: mimoBaseUrl,
-    apiKeyEnvName: "MIMO_API_KEY"
+    apiKeyEnvName: "MIMO_API_KEY",
+    enabled: true
   },
   {
     id: "mimo-v2.5-pro",
     label: "MiMo-V2.5-Pro",
     apiModel: configuredValue(process.env.MIMO_PRO_MODEL) ?? "mimo-v2.5-pro",
     baseUrl: mimoBaseUrl,
-    apiKeyEnvName: "MIMO_API_KEY"
+    apiKeyEnvName: "MIMO_API_KEY",
+    enabled: true
   },
   {
     id: "deepseek-v4-pro",
@@ -50,28 +52,32 @@ const models = [
       configuredValue(process.env.VOLCENGINE_DEEPSEEK_V4_PRO_MODEL) ??
       "ep-20260530114309-cwlh4",
     baseUrl: volcengineBaseUrl,
-    apiKeyEnvName: "VOLCENGINE_API_KEY"
+    apiKeyEnvName: "VOLCENGINE_API_KEY",
+    enabled: true
   },
   {
     id: "agnes-2.0-flash",
     label: "Agnes Text Flash",
     apiModel: configuredValue(process.env.AGNES_TEXT_MODEL) ?? "agnes-2.0-flash",
     baseUrl: agnesBaseUrl,
-    apiKeyEnvName: "AGNES_API_KEY"
+    apiKeyEnvName: "AGNES_API_KEY",
+    enabled: true
   },
   {
     id: "agnes-image-2.1-flash",
     label: "Agnes Image V2.1",
     apiModel: configuredValue(process.env.AGNES_IMAGE_MODEL) ?? "agnes-image-2.1-flash",
     baseUrl: agnesBaseUrl,
-    apiKeyEnvName: "AGNES_API_KEY"
+    apiKeyEnvName: "AGNES_API_KEY",
+    enabled: true
   },
   {
     id: "agnes-video-v2.0",
     label: "Agnes Video V2.0",
     apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0",
     baseUrl: agnesBaseUrl,
-    apiKeyEnvName: "AGNES_API_KEY"
+    apiKeyEnvName: "AGNES_API_KEY",
+    enabled: true
   }
 ];
 
