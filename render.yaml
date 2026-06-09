@@ -37,10 +37,7 @@ services:
         value: https://ark.cn-beijing.volces.com/api/v3
       - key: VOLCENGINE_API_KEY
         sync: false
-    disk:
-      name: uploads
-      mountPath: /app/.data/uploads
-      sizeGB: 5
+    disk: ~
 
 databases:
   - name: ai-juhe-db

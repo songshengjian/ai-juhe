@@ -19,11 +19,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -
 ENV NODE_ENV="production"
 ENV PORT="3000"
 ENV HOSTNAME="0.0.0.0"
-ENV UPLOAD_DIR="/app/.data/uploads"
+ENV UPLOAD_DIR="/tmp/uploads"
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/prisma ./prisma
-RUN mkdir -p /app/.data/uploads
+RUN mkdir -p /tmp/uploads
 EXPOSE 3000
 CMD ["sh", "-c", "npx prisma db push && npm run db:seed && npm run start -- --hostname 0.0.0.0 --port 3000"]
