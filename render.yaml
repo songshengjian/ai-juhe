@@ -41,10 +41,12 @@ services:
         value: https://apihub.agnes-ai.com/v1
       - key: AGNES_API_KEY
         sync: false
-      - key: AGNES_VIDEO_MODEL
-        value: agnes-video-v2.0
       - key: AGNES_TEXT_MODEL
         value: agnes-2.0-flash
+      - key: AGNES_IMAGE_MODEL
+        value: agnes-image-2.1-flash
+      - key: AGNES_VIDEO_MODEL
+        value: agnes-video-v2.0
     disk: ~
 
 databases:

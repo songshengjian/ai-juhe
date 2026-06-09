@@ -53,16 +53,23 @@ const models = [
     apiKeyEnvName: "VOLCENGINE_API_KEY"
   },
   {
-    id: "agnes-video-v2.0",
-    label: "Agnes Video V2.0",
-    apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0",
+    id: "agnes-2.0-flash",
+    label: "Agnes Text Flash",
+    apiModel: configuredValue(process.env.AGNES_TEXT_MODEL) ?? "agnes-2.0-flash",
     baseUrl: agnesBaseUrl,
     apiKeyEnvName: "AGNES_API_KEY"
   },
   {
-    id: "agnes-2.0-flash",
-    label: "Agnes Text Flash",
-    apiModel: configuredValue(process.env.AGNES_TEXT_MODEL) ?? "agnes-2.0-flash",
+    id: "agnes-image-2.1-flash",
+    label: "Agnes Image V2.1",
+    apiModel: configuredValue(process.env.AGNES_IMAGE_MODEL) ?? "agnes-image-2.1-flash",
+    baseUrl: agnesBaseUrl,
+    apiKeyEnvName: "AGNES_API_KEY"
+  },
+  {
+    id: "agnes-video-v2.0",
+    label: "Agnes Video V2.0",
+    apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0",
     baseUrl: agnesBaseUrl,
     apiKeyEnvName: "AGNES_API_KEY"
   }
