@@ -1,7 +1,10 @@
 export const MODEL_IDS = [
   "mimo-v2.5",
   "mimo-v2.5-pro",
-  "deepseek-v4-pro"
+  "deepseek-v4-pro",
+  "agnes-2.0-flash",
+  "agnes-image-2.1-flash",
+  "agnes-video-v2.0"
 ] as const;
 
 export type ModelId = (typeof MODEL_IDS)[number];
@@ -10,7 +13,7 @@ export const DEFAULT_MODEL_ID: ModelId = "mimo-v2.5";
 export interface ModelOption {
   id: ModelId;
   label: string;
-  provider: "Core" | "Volcengine";
+  provider: "Core" | "Volcengine" | "Agnes";
   description: string;
   badges: string[];
 }
@@ -36,6 +39,27 @@ export const MODEL_OPTIONS: readonly ModelOption[] = [
     provider: "Volcengine",
     description: "Text chat model.",
     badges: ["Coding", "Reasoning"]
+  },
+  {
+    id: "agnes-2.0-flash",
+    label: "Agnes Text Flash",
+    provider: "Agnes",
+    description: "Fast text chat model with 1M context.",
+    badges: ["Free", "Fast"]
+  },
+  {
+    id: "agnes-image-2.1-flash",
+    label: "Agnes Image V2.1",
+    provider: "Agnes",
+    description: "Text to image generation.",
+    badges: ["Free", "Image"]
+  },
+  {
+    id: "agnes-video-v2.0",
+    label: "Agnes Video V2.0",
+    provider: "Agnes",
+    description: "Text to video with audio sync.",
+    badges: ["Free", "Video"]
   }
 ];
 

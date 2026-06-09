@@ -108,6 +108,17 @@ function volcengineBaseUrl(): string | undefined {
   );
 }
 
+function agnesApiKey(): string | undefined {
+  return configuredValue(process.env.AGNES_API_KEY);
+}
+
+function agnesBaseUrl(): string | undefined {
+  return configuredBaseUrl(
+    process.env.AGNES_BASE_URL,
+    "https://apihub.agnes-ai.com/v1"
+  );
+}
+
 export function getModelDefinition(id: ModelId): ModelDefinition {
   const definitions: Record<ModelId, ModelDefinition> = {
     "mimo-v2.5": {
@@ -135,6 +146,28 @@ export function getModelDefinition(id: ModelId): ModelDefinition {
         configuredValue(process.env.VOLCENGINE_DEEPSEEK_V4_PRO_ENDPOINT) ??
         configuredValue(process.env.VOLCENGINE_DEEPSEEK_V4_PRO_MODEL) ??
         "ep-20260530114309-cwlh4"
+    },
+    "agnes-2.0-flash": {
+      id: "agnes-2.0-flash",
+      label: "Agnes Text Flash",
+      baseUrl: agnesBaseUrl(),
+      apiKey: agnesApiKey(),
+      apiModel: configuredValue(process.env.AGNES_TEXT_MODEL) ?? "agnes-2.0-flash",
+      includeUsageStream: true
+    },
+    "agnes-image-2.1-flash": {
+      id: "agnes-image-2.1-flash",
+      label: "Agnes Image V2.1",
+      baseUrl: agnesBaseUrl(),
+      apiKey: agnesApiKey(),
+      apiModel: configuredValue(process.env.AGNES_IMAGE_MODEL) ?? "agnes-image-2.1-flash"
+    },
+    "agnes-video-v2.0": {
+      id: "agnes-video-v2.0",
+      label: "Agnes Video V2.0",
+      baseUrl: agnesBaseUrl(),
+      apiKey: agnesApiKey(),
+      apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0"
     }
   };
   return definitions[id];
