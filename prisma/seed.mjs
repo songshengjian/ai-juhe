@@ -22,6 +22,10 @@ const volcengineBaseUrl = configuredBaseUrl(
   process.env.VOLCENGINE_BASE_URL ?? process.env.ARK_BASE_URL,
   "https://ark.cn-beijing.volces.com/api/v3"
 );
+const agnesBaseUrl = configuredBaseUrl(
+  process.env.AGNES_BASE_URL,
+  "https://apihub.agnes-ai.com/v1"
+);
 
 const models = [
   {
@@ -47,6 +51,13 @@ const models = [
       "ep-20260530114309-cwlh4",
     baseUrl: volcengineBaseUrl,
     apiKeyEnvName: "VOLCENGINE_API_KEY"
+  },
+  {
+    id: "agnes-video-v2.0",
+    label: "Agnes Video V2.0",
+    apiModel: configuredValue(process.env.AGNES_VIDEO_MODEL) ?? "agnes-video-v2.0",
+    baseUrl: agnesBaseUrl,
+    apiKeyEnvName: "AGNES_API_KEY"
   }
 ];
 

@@ -37,6 +37,12 @@ services:
         value: https://ark.cn-beijing.volces.com/api/v3
       - key: VOLCENGINE_API_KEY
         sync: false
+      - key: AGNES_BASE_URL
+        value: https://apihub.agnes-ai.com/v1
+      - key: AGNES_API_KEY
+        sync: false
+      - key: AGNES_VIDEO_MODEL
+        value: agnes-video-v2.0
     disk: ~
 
 databases:
